@@ -9,34 +9,81 @@
 import UIKit
 
 
-class StoreTableViewController: UITableViewController, AddStoreListViewControllerDelegate {
+class StoreTableViewController: UITableViewController,AddStoreListViewControllerDelegate {
    
-
-    
-    var myStores = [Store]!.self
-    
-    self.store = [Store]()
-    
-    
+    var stores : [Store]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         
-        let store = Store()
+        self.stores = [Store]()
         
+        let wholeFoods = Store()
+        wholeFoods.storeName = "WHOLE FOODS"
+        wholeFoods.storeNumber = "5300"
+        wholeFoods.color = UIColor.brown
+        wholeFoods.groceryItems = [Any]()
         
-        //myStores.append(Store(storeName: "Whole Foods", storeNumber: 5700, color: [UIColor .orange], groceryItems: ["itemName"]))
+        self.stores.append(wholeFoods)
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        let heb = Store()
+        heb.storeName = "HEB"
+        heb.storeNumber = "7500"
+        heb.color = UIColor.orange
+        heb.groceryItems = [Any]()
+        
+        self.stores.append(heb)
+        
+        let aldi = Store()
+        aldi.storeName = "ALDI"
+        aldi.storeNumber = "5000"
+        aldi.color = UIColor.brown
+        aldi.groceryItems = [Any]()
+        
+        self.stores.append(aldi)
+        
+        let walmart = Store()
+        walmart.storeName = "ALDI"
+        walmart.storeNumber = "3500"
+        walmart.color = UIColor.orange
+        walmart.groceryItems = [Any]()
+        
+        self.stores.append(walmart)
+        
+        let kroger = Store()
+        kroger.storeName = "KROGER"
+        kroger.storeNumber = "7000"
+        kroger.color = UIColor.brown
+        kroger.groceryItems = [Any]()
+        
+        self.stores.append(kroger)
+        
     }
     
     func addStoreListViewControllerDidAddStore(store: Store) {
         
+        self.stores.append(store)
+        self.tableView.reloadData()
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "showStoreItems" {
+           
+            let indexPath = self.tableView.indexPathForSelectedRow
+            
+           let store = self.stores[(indexPath?.row)!]
+            
+            let storeItemsTableVC = segue.destination as? StoreItemsTableViewController
+            storeItemsTableVC?.selectedStore = store
+            
+        } else {
+            let addNewStoreListVC = segue.destination as? AddStoreListViewController
+            addNewStoreListVC?.delegate = self
+        }
+
     }
     
 
@@ -54,61 +101,21 @@ class StoreTableViewController: UITableViewController, AddStoreListViewControlle
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return myStores.count
+        return self.stores.count
+    
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StoreTableViewCell", for: indexPath)
 
-//        store : myStores[indexPath.row]
+        let store = self.stores[indexPath.row]
+        cell.textLabel?.text = store.storeName
+        cell.textLabel?.textColor = UIColor .white
+        cell.detailTextLabel?.text = store.storeNumber
+        cell.detailTextLabel?.textColor = UIColor .lightText
+        cell.backgroundColor = store.color
 
         return cell
     }
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

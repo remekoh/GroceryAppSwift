@@ -9,11 +9,9 @@
 import UIKit
 
 class GroceryItem: NSObject {
-
-}
-
-struct groceryItem {
     
-    var itemName : String
+    var itemName = ""
 
 }
+
+

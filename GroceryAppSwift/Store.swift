@@ -10,9 +10,9 @@ import UIKit
 
 class Store: NSObject {
 
-    var storeName : String = ""
-    var storeNumber: Int = 0
-    var color : UIColor = UIColor.red
-    var groceryItems : [String] = [String]()
+    var storeName = ""
+    var storeNumber = ""
+    var color: UIColor!
+    var groceryItems = [Any]()
     
 }

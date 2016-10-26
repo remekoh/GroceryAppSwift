@@ -8,16 +8,39 @@
 
 import UIKit
 
-class StoreItemsTableViewController: UITableViewController {
+class StoreItemsTableViewController: UITableViewController,AddGroceryListItemViewControllerDelegate {
+    
+    var groceryItems : [GroceryItem]!
+    
+    
+    var selectedStore : Store!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        self.title = self.selectedStore.storeName
+        
+        self.groceryItems = [GroceryItem]()
+        
+        
+        self.title = "\(self.selectedStore.storeName) : \(self.selectedStore.storeNumber)"
+        
+        self.view.backgroundColor = self.selectedStore.color
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+    }
+    
+    func addGroceryListItemViewControllerDidAddItem(groceryItem: GroceryItem) {
+        
+        self.selectedStore.groceryItems.append(groceryItem)
+        self.tableView.reloadData()
+   
     }
 
     override func didReceiveMemoryWarning() {
@@ -28,24 +51,36 @@ class StoreItemsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+
+        return self.selectedStore.groceryItems.count
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let addItemListVC = segue.destination as? AddItemsListViewController
+        addItemListVC?.delegate = self
+        
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemTableViewCell", for: indexPath)
+        
+        var groceryItem = GroceryItem()
+        
+        groceryItem = self.selectedStore.groceryItems[(indexPath.row)] as! GroceryItem;
+        
+        cell.textLabel?.text = groceryItem.itemName
+        
 
         return cell
     }
-    */
+ 
 
     /*
     // Override to support conditional editing of the table view.
